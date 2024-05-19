@@ -7,8 +7,18 @@ export default class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      todos: []
+      todos: [],
+      error: '',
+      todoNameInput: '',
     }
+  }
+
+  onTodoNameInputChange = evt => {
+    const {value} = evt.target
+    this.setState({
+      ...this.state,
+      todoNameInput: value
+    })
   }
 
   fetchAllTodos = () => {
@@ -17,7 +27,7 @@ export default class App extends React.Component {
         this.setState({...this.state, todos: res.data.data})
       })
       .catch(err => {
-        debugger
+        this.setState({...this.state, error: err.response.data.message})
       })
   }
   componentDidMount(){
@@ -26,7 +36,9 @@ export default class App extends React.Component {
   render() {
     return(
       <div>
-        <div id="error">Error: No error here!</div>
+        <div id="error">
+          Error: {this.state.error}
+        </div>
         <div id="todos">
           {
             this.state.todos.map(td => {
@@ -35,7 +47,7 @@ export default class App extends React.Component {
           }
       </div>
       <form id="toDoForm">
-        <input type='text' placeholder='Type Todo: '></input>
+        <input value={this.state.todoNameInput} type='text' placeholder='Type Todo: '></input>
         <input type="submit"></input>
         <button>Clear Completed</button>
       </form>
