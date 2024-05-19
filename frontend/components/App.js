@@ -14,11 +14,8 @@ export default class App extends React.Component {
   }
 
   onTodoNameInputChange = evt => {
-    const {value} = evt.target
-    this.setState({
-      ...this.state,
-      todoNameInput: value
-    })
+    const { value } = evt.target
+    this.setState({...this.state, todoNameInput: value})
   }
 
   fetchAllTodos = () => {
@@ -47,7 +44,7 @@ export default class App extends React.Component {
           }
       </div>
       <form id="toDoForm">
-        <input value={this.state.todoNameInput} type='text' placeholder='Type Todo: '></input>
+        <input value={this.state.todoNameInput} onChange={this.onTodoNameInputChange} type='text' placeholder='Type Todo: '></input>
         <input type="submit"></input>
         <button>Clear Completed</button>
       </form>
