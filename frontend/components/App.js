@@ -10,7 +10,15 @@ export default class App extends React.Component {
       todos: [],
       error: '',
       todoNameInput: '',
+      displayCompleted: true,
     }
+  }
+
+  toggleDisplayCompleted = () => {
+    this.setState({
+      ...this.state,
+      displayCompleted: !this.state.displayCompleted
+    })
   }
 
   toggleCompleted = (id) => () => {
@@ -69,16 +77,19 @@ export default class App extends React.Component {
         </div>
         <div id="todos">
           {
-            this.state.todos.map(td => {
-              return <div onClick={this.toggleCompleted(td.id)} key={td.id}>{td.name}{td.completed ? ' ✔️' : ''}</div>
-            })
+            this.state.todos.reduce((acc, td) => {
+              if (this.state.displayCompleted || !td.completed) return acc.concat(
+                <div onClick={this.toggleCompleted(td.id)} key={td.id}>{td.name}{td.completed ? ' ✔️' : ''}</div>
+              )
+                return acc
+            }, [])
           }
       </div>
       <form id="toDoForm" onSubmit={this.onTodoFormSubmit}>
         <input value={this.state.todoNameInput} onChange={this.onTodoNameInputChange} type='text' placeholder='Type Todo: '></input>
         <input type="submit"></input>
-        <button>Clear Completed</button>
       </form>
+      <button onClick={this.toggleDisplayCompleted}>{this.state.displayCompleted ? 'hide' : 'show'} completed</button>
     </div>
     )
   }
